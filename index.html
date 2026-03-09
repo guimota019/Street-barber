@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Street Barber</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background: linear-gradient(135deg, #000, #333); /* preto */
+    color: white;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container{
+    background: #000; /* preto */
+    padding: 30px;
+    border-radius: 15px;
+    width: 380px;
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.5); /* sombra vermelha */
+}
+
+h1{
+    text-align: center;
+    color: #ff0000; /* vermelho */
+}
+
+label{
+    font-size: 14px;
+    color: #fff; /* branco */
+}
+
+input, select{
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: none;
+    background: #111; /* preto */
+    color: white; 
+}
+
+input:focus, select:focus{
+    outline: none;
+    box-shadow: 0 0 8px #ff0000; /* vermelho */
+}
+
+button{
+    width: 100%;
+    padding: 12px;
+    background: #ff0000; /* vermelho */
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 5px;
+    color: white;
+}
+
+button:hover{
+    background: #cc0000; /* vermelho mais escuro */
+}
+
+.whatsapp{
+    background: #ff0000; /* vermelho também */
+}
+
+.agendamentos{
+    margin-top: 25px;
+}
+
+.item{
+    background: #111; /* preto */
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+    border-left: 4px solid #ff0000; /* vermelho */
+    font-size: 14px;
+}
+
+.cancelar{
+    background: #ff4d4d; /* vermelho mais claro */
+    margin-top: 8px;
+    color: white;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💈 Street Barber</h1>
+
+<label>Nome</label>
+<input type="text" id="nome">
+
+<label>Serviço</label>
+<select id="servico">
+<option>Corte</option>
+<option>Barba</option>
+<option>Corte + Barba</option>
+<option>Degradê</option>
+</select>
+
+<label>Barbeiro</label>
+<select id="barbeiro">
+<option>Pastor</option>
+</select>
+
+<label>Data</label>
+<input type="date" id="data">
+
+<label>Horário</label>
+<select id="hora">
+<option>09:00</option>
+<option>10:00</option>
+<option>11:00</option>
+<option>13:00</option>
+<option>14:00</option>
+<option>15:00</option>
+<option>16:00</option>
+<option>17:00</option>
+<option>18:00</option>
+</select>
+
+<button onclick="agendar()">Agendar Horário</button>
+
+<button class="whatsapp" onclick="enviarWhats()">Enviar para WhatsApp</button>
+
+<div class="agendamentos" id="lista"></div>
+
+</div>
+
+<script>
+let numeroWhatsapp = "5519991365137"
+let agendamentos = JSON.parse(localStorage.getItem("agenda")) || []
+let ultimoAgendamento = ""
+mostrarAgendamentos()
+
+function agendar(){
+    let nome = document.getElementById("nome").value
+    let servico = document.getElementById("servico").value
+    let barbeiro = document.getElementById("barbeiro").value
+    let data = document.getElementById("data").value
+    let hora = document.getElementById("hora").value
+
+    if(nome == "" || data == ""){
+        alert("Preencha todos os campos")
+        return
+    }
+
+    let horarioExiste = agendamentos.find(a => a.data == data && a.hora == hora && a.barbeiro == barbeiro)
+    if(horarioExiste){
+        alert("Esse horário já foi reservado!")
+        return
+    }
+
+    let agendamento = { nome, servico, barbeiro, data, hora }
+    agendamentos.push(agendamento)
+    localStorage.setItem("agenda", JSON.stringify(agendamentos))
+
+    ultimoAgendamento = `
+Cliente: ${nome}
+Serviço: ${servico}
+Barbeiro: ${barbeiro}
+Data: ${data}
+Horário: ${hora}
+`
+    limparCampos()
+    mostrarAgendamentos()
+    alert("Agendamento realizado!")
+}
+
+function mostrarAgendamentos(){
+    let lista = document.getElementById("lista")
+    lista.innerHTML = ""
+    agendamentos.forEach((a,i)=>{
+        let item = document.createElement("div")
+        item.className="item"
+        item.innerHTML=`
+<b>${a.nome}</b><br>
+Serviço: ${a.servico}<br>
+Barbeiro: ${a.barbeiro}<br>
+📅 ${a.data} às ${a.hora}
+<br>
+<button class="cancelar" onclick="remover(${i})">Cancelar</button>
+`
+        lista.appendChild(item)
+    })
+}
+
+function remover(i){
+    if(confirm("Cancelar agendamento?")){
+        agendamentos.splice(i,1)
+        localStorage.setItem("agenda", JSON.stringify(agendamentos))
+        mostrarAgendamentos()
+    }
+}
+
+function limparCampos(){
+    document.getElementById("nome").value=""
+    document.getElementById("data").value=""
+}
+
+function enviarWhats(){
+    if(ultimoAgendamento==""){
+        alert("Faça um agendamento primeiro")
+        return
+    }
+    let url="https://wa.me/"+numeroWhatsapp+"?text="+encodeURIComponent(ultimoAgendamento)
+    window.open(url)
+}
+</script>
+
+</body>
+</html>
