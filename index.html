@@ -298,7 +298,7 @@ lista.appendChild(item);
 
 setInterval(mostrarAgendamentos,3000);
     
-document.getElementById("data").addEventListener("change", function(){
+document.getElementById("data").addEventListener("change", async function(){
 
 let dataSelecionada = new Date(this.value);
 let diaSemana = dataSelecionada.getDay();
@@ -327,13 +327,29 @@ else if(diaSemana==5){
 horarios=["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00"];
 }
 
+const querySnapshot = await getDocs(collection(db,"agendamentos"));
+
+let horariosOcupados = [];
+
+querySnapshot.forEach((docSnap)=>{
+let a = docSnap.data();
+
+if(a.data == this.value){
+horariosOcupados.push(a.hora);
+}
+});
+
 horarios.forEach(h=>{
+
+if(!horariosOcupados.includes(h)){
 
 let option=document.createElement("option");
 option.value=h;
 option.textContent=h;
 
 horaSelect.appendChild(option);
+
+}
 
 });
 
@@ -474,6 +490,7 @@ cliquesTitulo = 0;
 
 </body>
 </html>
+
 
 
 
