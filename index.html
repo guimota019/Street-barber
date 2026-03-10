@@ -298,13 +298,27 @@ lista.appendChild(item);
 
 mostrarAgendamentos();
 
-document.getElementById("data").addEventListener("change", function(){
+document.getElementById("data").addEventListener("change", async function(){
 
 let dataSelecionada = new Date(this.value);
 let diaSemana = dataSelecionada.getDay();
 let horaSelect = document.getElementById("hora");
 
 horaSelect.innerHTML="";
+
+const querySnapshot = await getDocs(collection(db,"agendamentos"));
+
+let ocupados = [];
+
+querySnapshot.forEach((docSnap)=>{
+
+let a = docSnap.data();
+
+if(a.data === this.value){
+ocupados.push(a.hora);
+}
+
+});
 
 if(diaSemana === 6){
 alert("Não atendemos aos domingos.");
@@ -328,11 +342,16 @@ horarios=["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00"];
 }
 
 horarios.forEach(h=>{
+
+if(!ocupados.includes(h)){
+
 let option=document.createElement("option");
 option.value=h;
 option.textContent=h;
+
 horaSelect.appendChild(option);
-});
+
+}
 
 });
 
@@ -442,6 +461,7 @@ cliquesTitulo = 0;
 
 </body>
 </html>
+
 
 
 
