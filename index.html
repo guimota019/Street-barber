@@ -160,13 +160,13 @@ let horaSelect = document.getElementById("hora");
 
 horaSelect.innerHTML = "";
 
-if(diaSemana === 0){
+if(diaSemana === 6){
     alert("Não atendemos aos domingos.");
     this.value = "";
     return;
 }
 
-if(diaSemana === 1){
+if(diaSemana === 0){
     alert("Não atendemos às segundas.");
     this.value = "";
     return;
@@ -174,11 +174,11 @@ if(diaSemana === 1){
 
 let horarios = [];
 
-if(diaSemana >= 2 && diaSemana <= 5){
+if(diaSemana >= 1 && diaSemana <= 4){
 horarios = ["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00"];
 }
 
-else if(diaSemana == 6){
+else if(diaSemana == 5){
 horarios = ["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00"];
 }
 
@@ -301,4 +301,5 @@ window.open(url);
 
 </body>
 </html>
+
 
