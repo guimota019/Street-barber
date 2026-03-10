@@ -7,10 +7,9 @@
 <title>Street Barber</title>
 
 <style>
-
 body{
     font-family: Arial;
-    background: linear-gradient(135deg, #000, #333); /* preto */
+    background: linear-gradient(135deg, #000, #333);
     color: white;
     margin: 0;
     display: flex;
@@ -20,21 +19,21 @@ body{
 }
 
 .container{
-    background: #000; /* preto */
+    background: #000;
     padding: 30px;
     border-radius: 15px;
     width: 380px;
-    box-shadow: 0 0 25px rgba(255, 0, 0, 0.5); /* sombra vermelha */
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.5);
 }
 
 h1{
     text-align: center;
-    color: #ff0000; /* vermelho */
+    color: #ff0000;
 }
 
 label{
     font-size: 14px;
-    color: #fff; /* branco */
+    color: #fff;
 }
 
 input, select{
@@ -44,19 +43,19 @@ input, select{
     margin-bottom: 15px;
     border-radius: 6px;
     border: none;
-    background: #111; /* preto */
+    background: #111;
     color: white; 
 }
 
 input:focus, select:focus{
     outline: none;
-    box-shadow: 0 0 8px #ff0000; /* vermelho */
+    box-shadow: 0 0 8px #ff0000;
 }
 
 button{
     width: 100%;
     padding: 12px;
-    background: #ff0000; /* vermelho */
+    background: #ff0000;
     border: none;
     border-radius: 8px;
     font-weight: bold;
@@ -66,11 +65,11 @@ button{
 }
 
 button:hover{
-    background: #cc0000; /* vermelho mais escuro */
+    background: #cc0000;
 }
 
 .whatsapp{
-    background: #ff0000; /* vermelho também */
+    background: #ff0000;
 }
 
 .agendamentos{
@@ -78,20 +77,26 @@ button:hover{
 }
 
 .item{
-    background: #111; /* preto */
+    background: #111;
     padding: 12px;
     border-radius: 8px;
     margin-top: 10px;
-    border-left: 4px solid #ff0000; /* vermelho */
+    border-left: 4px solid #ff0000;
     font-size: 14px;
 }
 
 .cancelar{
-    background: #ff4d4d; /* vermelho mais claro */
+    background: #ff4d4d;
     margin-top: 8px;
     color: white;
 }
 
+.horarios{
+    margin-top: 20px;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+}
 </style>
 </head>
 
@@ -106,15 +111,18 @@ button:hover{
 
 <label>Serviço</label>
 <select id="servico">
-<option>Corte</option>
-<option>Barba</option>
-<option>Corte + Barba</option>
-<option>Degradê</option>
+    <option>Corte 35</option>
+    <option>Corte + Sobrancelha 40</option>
+    <option>Corte + Barba 55</option>
+    <option>Barba 30</option>
+    <option>Corte + Pigmentação 50</option>
+    <option>Corte + Luzes 75</option>
+    <option>Corte + Relaxamento 65</option>
 </select>
 
 <label>Barbeiro</label>
 <select id="barbeiro">
-<option>Pastor</option>
+    <option>Pastor</option>
 </select>
 
 <label>Data</label>
@@ -122,22 +130,28 @@ button:hover{
 
 <label>Horário</label>
 <select id="hora">
-<option>09:00</option>
-<option>10:00</option>
-<option>11:00</option>
-<option>13:00</option>
-<option>14:00</option>
-<option>15:00</option>
-<option>16:00</option>
-<option>17:00</option>
-<option>18:00</option>
+    <option>09:00</option>
+    <option>10:00</option>
+    <option>11:00</option>
+    <option>13:00</option>
+    <option>14:00</option>
+    <option>15:00</option>
+    <option>16:00</option>
+    <option>17:00</option>
+    <option>18:00</option>
+    <option>19:00</option>
 </select>
 
 <button onclick="agendar()">Agendar Horário</button>
-
 <button class="whatsapp" onclick="enviarWhats()">Enviar para WhatsApp</button>
 
 <div class="agendamentos" id="lista"></div>
+
+<div class="horarios">
+    <b>Horários de funcionamento:</b><br>
+    Terça a sexta: 9h às 19h<br>
+    Sábado: 9h às 16h
+</div>
 
 </div>
 
