@@ -207,9 +207,6 @@ color:#ff2b2b;
 <label>Nome</label>
 <input type="text" id="nome">
 
-<label>Telefone</label>
-<input type="tel" id="telefone" placeholder="Ex: 19999999999">
-
 <label>Serviço</label>
 <select id="servico">
 <option>Corte - R$35</option>
@@ -400,27 +397,14 @@ document.getElementById("hora").innerHTML="";
 
 window.enviarWhats = function(){
 
-let telefoneCliente = document.getElementById("telefone").value;
-
-if(telefoneCliente == ""){
-alert("Digite seu telefone");
+if(ultimoAgendamento==""){
+alert("Faça um agendamento primeiro");
 return;
 }
 
-let mensagemBarbeiro =
-"💈 Novo agendamento\n\n" + ultimoAgendamento;
+let url="https://wa.me/"+numeroWhatsapp+"?text="+encodeURIComponent(ultimoAgendamento);
 
-let mensagemCliente =
-"💈 Street Barber\n\nSeu horário foi confirmado!\n\n" + ultimoAgendamento;
-
-let urlBarbeiro = "https://wa.me/"+numeroWhatsapp+"?text="+encodeURIComponent(mensagemBarbeiro);
-let urlCliente = "https://wa.me/55"+telefoneCliente+"?text="+encodeURIComponent(mensagemCliente);
-
-window.open(urlBarbeiro,"_blank");
-
-setTimeout(function(){
-window.location.href = urlCliente;
-},1500);
+window.open(url);
 
 }
 
@@ -461,6 +445,7 @@ cliquesTitulo = 0;
 
 </body>
 </html>
+
 
 
 
