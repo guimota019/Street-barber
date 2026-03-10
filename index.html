@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Street Barber</title>
-
 <style>
 body{
     font-family: Arial;
@@ -17,7 +15,6 @@ body{
     align-items: center;
     min-height: 100vh;
 }
-
 .container{
     background: #000;
     padding: 30px;
@@ -25,17 +22,14 @@ body{
     width: 380px;
     box-shadow: 0 0 25px rgba(255, 0, 0, 0.5);
 }
-
 h1{
     text-align: center;
     color: #ff0000;
 }
-
 label{
     font-size: 14px;
     color: #fff;
 }
-
 input, select{
     width: 100%;
     padding: 10px;
@@ -46,12 +40,10 @@ input, select{
     background: #111;
     color: white; 
 }
-
 input:focus, select:focus{
     outline: none;
     box-shadow: 0 0 8px #ff0000;
 }
-
 button{
     width: 100%;
     padding: 12px;
@@ -63,19 +55,15 @@ button{
     margin-top: 5px;
     color: white;
 }
-
 button:hover{
     background: #cc0000;
 }
-
 .whatsapp{
     background: #ff0000;
 }
-
 .agendamentos{
     margin-top: 25px;
 }
-
 .item{
     background: #111;
     padding: 12px;
@@ -84,13 +72,11 @@ button:hover{
     border-left: 4px solid #ff0000;
     font-size: 14px;
 }
-
 .cancelar{
     background: #ff4d4d;
     margin-top: 8px;
     color: white;
 }
-
 .horarios{
     margin-top: 20px;
     font-size: 14px;
@@ -99,11 +85,8 @@ button:hover{
 }
 </style>
 </head>
-
 <body>
-
 <div class="container">
-
 <h1>💈 Street Barber</h1>
 
 <label>Nome</label>
@@ -130,16 +113,7 @@ button:hover{
 
 <label>Horário</label>
 <select id="hora">
-    <option>09:00</option>
-    <option>10:00</option>
-    <option>11:00</option>
-    <option>13:00</option>
-    <option>14:00</option>
-    <option>15:00</option>
-    <option>16:00</option>
-    <option>17:00</option>
-    <option>18:00</option>
-    <option>19:00</option>
+    <!-- opções serão preenchidas automaticamente -->
 </select>
 
 <button onclick="agendar()">Agendar Horário</button>
@@ -152,36 +126,63 @@ button:hover{
     Terça a sexta: 9h às 19h<br>
     Sábado: 9h às 16h
 </div>
-
 </div>
 
 <script>
-let numeroWhatsapp = "5519991365137"
-let agendamentos = JSON.parse(localStorage.getItem("agenda")) || []
-let ultimoAgendamento = ""
-mostrarAgendamentos()
+let numeroWhatsapp = "5519991365137";
+let agendamentos = JSON.parse(localStorage.getItem("agenda")) || [];
+let ultimoAgendamento = "";
+mostrarAgendamentos();
+
+// Atualiza horários dinamicamente
+document.getElementById("data").addEventListener("change", function(){
+    let dataSelecionada = new Date(this.value);
+    let diaSemana = dataSelecionada.getDay(); // 0=domingo,1=segunda,...6=sábado
+    let horaSelect = document.getElementById("hora");
+    horaSelect.innerHTML = "";
+
+    if(diaSemana == 0 || diaSemana == 1){
+        alert("Não atendemos nesse dia. Escolha outro.");
+        this.value = "";
+        return;
+    }
+
+    let horarios = [];
+    if(diaSemana >= 2 && diaSemana <= 5){ // terça a sexta
+        horarios = ["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00"];
+    } else if(diaSemana == 6){ // sábado
+        horarios = ["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00"];
+    }
+
+    horarios.forEach(h => {
+        let option = document.createElement("option");
+        option.value = h;
+        option.textContent = h;
+        horaSelect.appendChild(option);
+    });
+});
 
 function agendar(){
-    let nome = document.getElementById("nome").value
-    let servico = document.getElementById("servico").value
-    let barbeiro = document.getElementById("barbeiro").value
-    let data = document.getElementById("data").value
-    let hora = document.getElementById("hora").value
+    let nome = document.getElementById("nome").value;
+    let servico = document.getElementById("servico").value;
+    let barbeiro = document.getElementById("barbeiro").value;
+    let data = document.getElementById("data").value;
+    let hora = document.getElementById("hora").value;
 
     if(nome == "" || data == ""){
-        alert("Preencha todos os campos")
-        return
+        alert("Preencha todos os campos");
+        return;
     }
 
-    let horarioExiste = agendamentos.find(a => a.data == data && a.hora == hora && a.barbeiro == barbeiro)
+    let horarioExiste = agendamentos.find(a => a.data == data && a.hora == hora && a.barbeiro == barbeiro);
     if(horarioExiste){
-        alert("Esse horário já foi reservado!")
-        return
+        alert("Esse horário já foi reservado!");
+        return;
     }
 
-    let agendamento = { nome, servico, barbeiro, data, hora }
-    agendamentos.push(agendamento)
-    localStorage.setItem("agenda", JSON.stringify(agendamentos))
+    let agendamento = { nome, servico, barbeiro, data, hora };
+    agendamentos.push(agendamento);
+    localStorage.setItem("agenda", JSON.stringify(agendamentos));
 
     ultimoAgendamento = `
 Cliente: ${nome}
@@ -189,18 +190,18 @@ Serviço: ${servico}
 Barbeiro: ${barbeiro}
 Data: ${data}
 Horário: ${hora}
-`
-    limparCampos()
-    mostrarAgendamentos()
-    alert("Agendamento realizado!")
+`;
+    limparCampos();
+    mostrarAgendamentos();
+    alert("Agendamento realizado!");
 }
 
 function mostrarAgendamentos(){
-    let lista = document.getElementById("lista")
-    lista.innerHTML = ""
+    let lista = document.getElementById("lista");
+    lista.innerHTML = "";
     agendamentos.forEach((a,i)=>{
-        let item = document.createElement("div")
-        item.className="item"
+        let item = document.createElement("div");
+        item.className="item";
         item.innerHTML=`
 <b>${a.nome}</b><br>
 Serviço: ${a.servico}<br>
@@ -208,33 +209,33 @@ Barbeiro: ${a.barbeiro}<br>
 📅 ${a.data} às ${a.hora}
 <br>
 <button class="cancelar" onclick="remover(${i})">Cancelar</button>
-`
-        lista.appendChild(item)
-    })
+`;
+        lista.appendChild(item);
+    });
 }
 
 function remover(i){
     if(confirm("Cancelar agendamento?")){
-        agendamentos.splice(i,1)
-        localStorage.setItem("agenda", JSON.stringify(agendamentos))
-        mostrarAgendamentos()
+        agendamentos.splice(i,1);
+        localStorage.setItem("agenda", JSON.stringify(agendamentos));
+        mostrarAgendamentos();
     }
 }
 
 function limparCampos(){
-    document.getElementById("nome").value=""
-    document.getElementById("data").value=""
+    document.getElementById("nome").value="";
+    document.getElementById("data").value="";
+    document.getElementById("hora").innerHTML = "";
 }
 
 function enviarWhats(){
     if(ultimoAgendamento==""){
-        alert("Faça um agendamento primeiro")
-        return
+        alert("Faça um agendamento primeiro");
+        return;
     }
-    let url="https://wa.me/"+numeroWhatsapp+"?text="+encodeURIComponent(ultimoAgendamento)
-    window.open(url)
+    let url="https://wa.me/"+numeroWhatsapp+"?text="+encodeURIComponent(ultimoAgendamento);
+    window.open(url);
 }
 </script>
-
 </body>
 </html>
