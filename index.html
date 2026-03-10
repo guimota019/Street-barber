@@ -26,13 +26,6 @@ body{
     box-shadow: 0 0 25px rgba(255, 0, 0, 0.5);
 }
 
-.logo{
-    width: 200px;
-    display: block;
-    margin: auto;
-    margin-bottom: 10px;
-}
-
 h1{
     text-align: center;
     color: #ff0000;
@@ -112,8 +105,6 @@ button:hover{
 
 <div class="container">
 
-<img src="logo.png" class="logo">
-
 <h1>💈 Street Barber</h1>
 
 <label>Nome</label>
@@ -169,10 +160,16 @@ let horaSelect = document.getElementById("hora");
 
 horaSelect.innerHTML = "";
 
-if(diaSemana == 0 || diaSemana == 1){
-alert("Não atendemos nesse dia.");
-this.value = "";
-return;
+if(diaSemana === 0){
+    alert("Não atendemos aos domingos.");
+    this.value = "";
+    return;
+}
+
+if(diaSemana === 1){
+    alert("Não atendemos às segundas.");
+    this.value = "";
+    return;
 }
 
 let horarios = [];
@@ -304,3 +301,4 @@ window.open(url);
 
 </body>
 </html>
+
