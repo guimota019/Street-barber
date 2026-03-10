@@ -232,7 +232,7 @@ color:#ff2b2b;
 <button onclick="agendar()">Agendar horário</button>
 <button class="whatsapp" onclick="enviarWhats()">Confirmar no Whatsapp</button>
 
-<div class="agendamentos" id="lista"></div>
+<div class="agendamentos" id="lista" style="display:none"></div>
 
 <div class="horarios">
 <b>Horários de funcionamento:</b><br>
@@ -296,8 +296,8 @@ lista.appendChild(item);
 
 }
 
-mostrarAgendamentos();
-
+setInterval(mostrarAgendamentos,3000);
+    
 document.getElementById("data").addEventListener("change", function(){
 
 let dataSelecionada = new Date(this.value);
@@ -347,8 +347,25 @@ let barbeiro=document.getElementById("barbeiro").value;
 let data=document.getElementById("data").value;
 let hora=document.getElementById("hora").value;
 
-if(nome=="" || data==""){
+if(nome=="" || data=="" || hora==""){
 alert("Preencha todos os campos");
+return;
+}
+
+const querySnapshot = await getDocs(collection(db,"agendamentos"));
+
+let ocupado = false;
+
+querySnapshot.forEach((docSnap)=>{
+let a = docSnap.data();
+
+if(a.data == data && a.hora == hora && a.barbeiro == barbeiro){
+ocupado = true;
+}
+});
+
+if(ocupado){
+alert("Esse horário já foi agendado");
 return;
 }
 
@@ -361,11 +378,17 @@ hora:hora
 });
 
 ultimoAgendamento=`
+💈 Street Barber
+
+Seu horário foi agendado com sucesso!
+
 Cliente: ${nome}
 Serviço: ${servico}
 Barbeiro: ${barbeiro}
-Data: ${data}
-Horário: ${hora}
+📅 Data: ${data}
+⏰ Horário: ${hora}
+
+Chegue 5 minutos antes do horário.
 `;
 
 limparCampos();
@@ -416,6 +439,8 @@ if(senha === "barber123"){
 
 modoBarbeiro = true;
 
+document.getElementById("lista").style.display="block";
+
 alert("Modo barbeiro ativado");
 
 mostrarAgendamentos();
@@ -445,6 +470,7 @@ cliquesTitulo = 0;
 
 </body>
 </html>
+
 
 
 
