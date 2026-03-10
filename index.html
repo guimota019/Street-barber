@@ -400,34 +400,14 @@ document.getElementById("hora").innerHTML="";
 
 window.enviarWhats = function(){
 
-let telefoneCliente = document.getElementById("telefone").value;
-
-if(telefoneCliente == ""){
-alert("Digite seu telefone");
+if(ultimoAgendamento==""){
+alert("Faça um agendamento primeiro");
 return;
 }
 
-let mensagemBarbeiro = `
-💈 Novo agendamento
+let url="https://wa.me/"+numeroWhatsapp+"?text="+encodeURIComponent(ultimoAgendamento);
 
-${ultimoAgendamento}
-`;
-
-let mensagemCliente = `
-💈 Street Barber
-
-Seu horário foi confirmado!
-
-${ultimoAgendamento}
-
-Se precisar cancelar, avise no WhatsApp.
-`;
-
-let urlBarbeiro = "https://wa.me/"+numeroBarbeiro+"?text="+encodeURIComponent(mensagemBarbeiro);
-let urlCliente = "https://wa.me/55"+telefoneCliente+"?text="+encodeURIComponent(mensagemCliente);
-
-window.open(urlBarbeiro);
-setTimeout(()=>{ window.open(urlCliente); },800);
+window.open(url);
 
 }
 
@@ -468,6 +448,7 @@ cliquesTitulo = 0;
 
 </body>
 </html>
+
 
 
 
