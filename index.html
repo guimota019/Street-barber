@@ -35,8 +35,12 @@ border:1px solid rgba(255,255,255,0.05);
 h1{
 text-align:center;
 color:#ff2b2b;
-margin-bottom:25px;
-letter-spacing:1px;
+margin-bottom:4px;
+letter-spacing:2px;
+text-shadow:
+0 0 5px #ff0000,
+0 0 10px #ff0000,
+0 0 20px #ff0000;
 }
 
 label{
@@ -133,10 +137,30 @@ margin-bottom:15px;
 .linha{
 width:80px;
 height:3px;
-background:#ff2b2b;
-margin:2px auto 12px auto;
+margin:2px auto 6px auto;
 border-radius:10px;
+background:linear-gradient(90deg, transparent, #ff2b2b, transparent);
+animation:brilho 2s linear infinite;
 }
+
+@keyframes brilho{
+
+0%{
+transform:scaleX(0.6);
+opacity:0.6;
+}
+
+50%{
+transform:scaleX(1);
+opacity:1;
+}
+
+100%{
+transform:scaleX(0.6);
+opacity:0.6;
+}
+
+}    
 </style>
 </head>
 
@@ -346,6 +370,7 @@ window.open(url);
 
 </body>
 </html>
+
 
 
 
