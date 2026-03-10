@@ -194,11 +194,7 @@ color:#ff2b2b;
 
 <div class="topo">
 
-<h1>STREET BARBER</h1>
-
-<button onclick="loginBarbeiro()" style="margin-bottom:10px">
-🔒 Área do Barbeiro
-</button>
+<h1 onclick="segredoBarbeiro()">STREET BARBER</h1>
 
 <div class="icone">💈</div>
 
@@ -264,6 +260,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+let cliquesTitulo = 0;
 let numeroWhatsapp = "5519991365137";
 let modoBarbeiro = false;
 let ultimoAgendamento = "";
@@ -427,10 +424,25 @@ alert("Senha incorreta");
 }
 
 }
+
+window.segredoBarbeiro = function(){
+
+cliquesTitulo++;
+
+if(cliquesTitulo >= 5){
+
+loginBarbeiro();
+
+cliquesTitulo = 0;
+
+}
+
+}
 </script>
 
 </body>
 </html>
+
 
 
 
