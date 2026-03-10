@@ -196,6 +196,12 @@ color:#ff2b2b;
 
 <h1>STREET BARBER</h1>
 
+<h1>STREET BARBER</h1>
+
+<button onclick="loginBarbeiro()" style="margin-bottom:10px">
+🔒 Área do Barbeiro
+</button>
+
 <div class="icone">💈</div>
 
 <div class="linha"></div>
@@ -261,6 +267,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 let numeroWhatsapp = "5519991365137";
+let modoBarbeiro = false;
 let ultimoAgendamento = "";
 
 async function mostrarAgendamentos(){
@@ -285,7 +292,7 @@ Serviço: ${a.servico}<br>
 Barbeiro: ${a.barbeiro}<br>
 📅 ${a.data} às ${a.hora}
 <br>
-<button class="cancelar" onclick="remover('${id}')">Cancelar</button>
+${modoBarbeiro ? `<button class="cancelar" onclick="remover('${id}')">Cancelar</button>` : ""}
 `;
 
 lista.appendChild(item);
@@ -403,10 +410,30 @@ window.open(url);
 
 }
 
+window.loginBarbeiro = function(){
+
+let senha = prompt("Digite a senha do barbeiro");
+
+if(senha === "barber123"){
+
+modoBarbeiro = true;
+
+alert("Modo barbeiro ativado");
+
+mostrarAgendamentos();
+
+} else {
+
+alert("Senha incorreta");
+
+}
+
+}
 </script>
 
 </body>
 </html>
+
 
 
 
