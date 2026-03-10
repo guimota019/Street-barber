@@ -242,11 +242,58 @@ Sábado: 9h às 16h
 
 </div>
 
-<script>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDGitiusddB0lTMbF05pLWeGtqvYkmwAbk",
+  authDomain: "street-barber-34a37.firebaseapp.com",
+  projectId: "street-barber-34a37",
+  storageBucket: "street-barber-34a37.firebasestorage.app",
+  messagingSenderId: "785996344727",
+  appId: "1:785996344727:web:9fc92c13c00d78964868d2",
+  measurementId: "G-2M2BM2Q353"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 let numeroWhatsapp = "5519991365137";
-let agendamentos = JSON.parse(localStorage.getItem("agenda")) || [];
 let ultimoAgendamento = "";
+
+async function mostrarAgendamentos(){
+
+let lista = document.getElementById("lista");
+lista.innerHTML="";
+
+const querySnapshot = await getDocs(collection(db,"agendamentos"));
+
+querySnapshot.forEach((docSnap)=>{
+
+let a = docSnap.data();
+let id = docSnap.id;
+
+let item = document.createElement("div");
+
+item.className="item";
+
+item.innerHTML=`
+<b>${a.nome}</b><br>
+Serviço: ${a.servico}<br>
+Barbeiro: ${a.barbeiro}<br>
+📅 ${a.data} às ${a.hora}
+<br>
+<button class="cancelar" onclick="remover('${id}')">Cancelar</button>
+`;
+
+lista.appendChild(item);
+
+});
+
+}
+
 mostrarAgendamentos();
 
 document.getElementById("data").addEventListener("change", function(){
@@ -255,69 +302,60 @@ let dataSelecionada = new Date(this.value);
 let diaSemana = dataSelecionada.getDay();
 let horaSelect = document.getElementById("hora");
 
-horaSelect.innerHTML = "";
+horaSelect.innerHTML="";
 
 if(diaSemana === 6){
-    alert("Não atendemos aos domingos.");
-    this.value = "";
-    return;
+alert("Não atendemos aos domingos.");
+this.value="";
+return;
 }
 
 if(diaSemana === 0){
-    alert("Não atendemos às segundas.");
-    this.value = "";
-    return;
+alert("Não atendemos às segundas.");
+this.value="";
+return;
 }
 
-let horarios = [];
+let horarios=[];
 
-if(diaSemana >= 1 && diaSemana <= 4){
-horarios = ["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00"];
+if(diaSemana>=1 && diaSemana<=4){
+horarios=["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00"];
+}
+else if(diaSemana==5){
+horarios=["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00"];
 }
 
-else if(diaSemana == 5){
-horarios = ["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00"];
-}
-
-horarios.forEach(h => {
-
-let option = document.createElement("option");
-option.value = h;
-option.textContent = h;
-
+horarios.forEach(h=>{
+let option=document.createElement("option");
+option.value=h;
+option.textContent=h;
 horaSelect.appendChild(option);
-
 });
 
 });
 
-function agendar(){
+window.agendar = async function(){
 
-let nome = document.getElementById("nome").value;
-let servico = document.getElementById("servico").value;
-let barbeiro = document.getElementById("barbeiro").value;
-let data = document.getElementById("data").value;
-let hora = document.getElementById("hora").value;
+let nome=document.getElementById("nome").value;
+let servico=document.getElementById("servico").value;
+let barbeiro=document.getElementById("barbeiro").value;
+let data=document.getElementById("data").value;
+let hora=document.getElementById("hora").value;
 
-if(nome == "" || data == ""){
+if(nome=="" || data==""){
 alert("Preencha todos os campos");
 return;
 }
 
-let horarioExiste = agendamentos.find(a => a.data == data && a.hora == hora && a.barbeiro == barbeiro);
+await addDoc(collection(db,"agendamentos"),{
+nome:nome,
+servico:servico,
+barbeiro:barbeiro,
+data:data,
+hora:hora
+});
 
-if(horarioExiste){
-alert("Esse horário já foi reservado!");
-return;
-}
-
-let agendamento = { nome, servico, barbeiro, data, hora };
-
-agendamentos.push(agendamento);
-
-localStorage.setItem("agenda", JSON.stringify(agendamentos));
-
-ultimoAgendamento = `
+ultimoAgendamento=`
 Cliente: ${nome}
 Serviço: ${servico}
 Barbeiro: ${barbeiro}
@@ -332,40 +370,11 @@ alert("Agendamento realizado!");
 
 }
 
-function mostrarAgendamentos(){
-
-let lista = document.getElementById("lista");
-
-lista.innerHTML = "";
-
-agendamentos.forEach((a,i)=>{
-
-let item = document.createElement("div");
-
-item.className="item";
-
-item.innerHTML=`
-<b>${a.nome}</b><br>
-Serviço: ${a.servico}<br>
-Barbeiro: ${a.barbeiro}<br>
-📅 ${a.data} às ${a.hora}
-<br>
-<button class="cancelar" onclick="remover(${i})">Cancelar</button>
-`;
-
-lista.appendChild(item);
-
-});
-
-}
-
-function remover(i){
+window.remover = async function(id){
 
 if(confirm("Cancelar agendamento?")){
 
-agendamentos.splice(i,1);
-
-localStorage.setItem("agenda", JSON.stringify(agendamentos));
+await deleteDoc(doc(db,"agendamentos",id));
 
 mostrarAgendamentos();
 
@@ -381,7 +390,7 @@ document.getElementById("hora").innerHTML="";
 
 }
 
-function enviarWhats(){
+window.enviarWhats = function(){
 
 if(ultimoAgendamento==""){
 alert("Faça um agendamento primeiro");
@@ -398,6 +407,7 @@ window.open(url);
 
 </body>
 </html>
+
 
 
 
