@@ -229,8 +229,7 @@ color:#ff2b2b;
 <label>Horário</label>
 <select id="hora"></select>
 
-<button onclick="agendar()">Agendar horário</button>
-<button class="whatsapp" onclick="enviarWhats()">Confirmar no Whatsapp</button>
+<button class="whatsapp" onclick="agendar()">Agendar e confirmar no WhatsApp</button>
 
 <div class="agendamentos" id="lista" style="display:none"></div>
 
@@ -414,6 +413,9 @@ Obrigado por agendar conosco!
 limparCampos();
 mostrarAgendamentos();
 
+let url="https://wa.me/"+numeroWhatsapp+"?text="+encodeURIComponent(ultimoAgendamento);
+window.open(url);
+
 alert("Agendamento realizado!");
 
 }
@@ -490,6 +492,7 @@ cliquesTitulo = 0;
 
 </body>
 </html>
+
 
 
 
