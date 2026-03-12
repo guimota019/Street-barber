@@ -317,7 +317,13 @@ lista.appendChild(item);
 setInterval(mostrarAgendamentos,7000);
     
 document.getElementById("data").addEventListener("change", async function(){
+let hoje = new Date().toISOString().split("T")[0];
 
+if(this.value < hoje){
+alert("Escolha uma data válida");
+this.value="";
+return;
+}
 let dataSelecionada = new Date(this.value);
 let diaSemana = dataSelecionada.getDay();
 let horaSelect = document.getElementById("hora");
@@ -524,6 +530,7 @@ cliquesTitulo = 0;
 
 </body>
 </html>
+
 
 
 
