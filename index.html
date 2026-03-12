@@ -183,6 +183,25 @@ font-family:Arial;
 opacity:1;
 color:#ff2b2b;
 }
+
+.horario-btn{
+padding:10px;
+margin:5px;
+border-radius:8px;
+border:none;
+background:#222;
+color:white;
+cursor:pointer;
+}
+
+.horario-btn:hover{
+background:#ff2b2b;
+}
+
+.ocupado{
+background:#555;
+cursor:not-allowed;
+}
 </style>
 </head>
     
@@ -227,7 +246,7 @@ color:#ff2b2b;
 <input type="date" id="data">
 
 <label>Horário</label>
-<select id="hora"></select>
+<div id="hora"></div>
 
 <button class="whatsapp" onclick="agendar()">Agendar e confirmar no WhatsApp</button>
 
@@ -340,18 +359,23 @@ horariosOcupados.push(a.hora);
 
 horarios.forEach(h=>{
 
-if(!horariosOcupados.includes(h)){
+let btn = document.createElement("button");
+btn.textContent = h;
+btn.className = "horario-btn";
 
-let option=document.createElement("option");
-option.value=h;
-option.textContent=h;
+if(horariosOcupados.includes(h)){
+btn.classList.add("ocupado");
+btn.disabled = true;
+}else{
 
-horaSelect.appendChild(option);
-
+btn.onclick = function(){
+document.getElementById("hora").dataset.hora = h;
+};
 }
 
-});
+horaSelect.appendChild(btn);
 
+});
 });
     
 window.agendar = async function(){
@@ -360,9 +384,9 @@ let nome=document.getElementById("nome").value;
 let servico=document.getElementById("servico").value;
 let barbeiro=document.getElementById("barbeiro").value;
 let data=document.getElementById("data").value;
-let hora=document.getElementById("hora").value;
+let hora=document.getElementById("hora").dataset.hora;
 
-if(nome=="" || data=="" || hora==""){
+if(!nome || !data || !hora){
 alert("Preencha todos os campos");
 return;
 }
@@ -449,7 +473,7 @@ return;
 
 let url="https://wa.me/"+numeroWhatsapp+"?text="+encodeURIComponent(ultimoAgendamento);
 
-window.open(url);
+window.location.href = url;
 
 }
 
@@ -492,6 +516,7 @@ cliquesTitulo = 0;
 
 </body>
 </html>
+
 
 
 
