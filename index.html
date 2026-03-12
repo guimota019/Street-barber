@@ -369,7 +369,15 @@ btn.disabled = true;
 }else{
 
 btn.onclick = function(){
+
 document.getElementById("hora").dataset.hora = h;
+
+document.querySelectorAll(".horario-btn").forEach(b=>{
+b.style.background="#222";
+});
+
+btn.style.background="#ff2b2b";
+
 };
 }
 
@@ -438,7 +446,7 @@ limparCampos();
 mostrarAgendamentos();
 
 let url="https://wa.me/"+numeroWhatsapp+"?text="+encodeURIComponent(ultimoAgendamento);
-window.open(url);
+window.location.href = url;
 
 alert("Agendamento realizado!");
 
@@ -516,6 +524,7 @@ cliquesTitulo = 0;
 
 </body>
 </html>
+
 
 
 
