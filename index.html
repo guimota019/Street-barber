@@ -303,7 +303,7 @@ item.innerHTML=`
 <b>${a.nome}</b><br>
 Serviço: ${a.servico}<br>
 Barbeiro: ${a.barbeiro}<br>
-📅 ${a.data} às ${a.hora}
+📅 ${a.data.split("-").reverse().join("/")} às ${a.hora}
 <br>
 ${modoBarbeiro ? `<button class="cancelar" onclick="remover('${id}')">Cancelar</button>` : ""}
 `;
