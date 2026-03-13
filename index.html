@@ -399,8 +399,10 @@ let servico=document.getElementById("servico").value;
 let barbeiro=document.getElementById("barbeiro").value;
 let data=document.getElementById("data").value;
 let hora=document.getElementById("hora").dataset.hora;
-
+let partes = data.split("-");
+let dataFormatada = partes[2] + "/" + partes[1] + "/" + partes[0];
 if(!nome || !data || !hora){
+
 alert("Preencha todos os campos");
 return;
 }
@@ -440,7 +442,7 @@ ultimoAgendamento=`
 👤 *Cliente:* ${nome}
 ✂️ *Serviço:* ${servico}
 👨 *Barbeiro:* ${barbeiro}
-📅 *Data:* ${data}
+📅 *Data:* ${dataFormatada}
 ⏰ *Horário:* ${hora}
 
 ━━━━━━━━━━━━━━
