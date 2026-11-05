@@ -281,19 +281,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-function dataLocal(dias = 0) {
-    const data = new Date();
-    data.setDate(data.getDate() + dias);
-
-    const ano = data.getFullYear();
-    const mes = String(data.getMonth() + 1).padStart(2, "0");
-    const dia = String(data.getDate()).padStart(2, "0");
-
-    return `${ano}-${mes}-${dia}`;
-}
-
-document.getElementById("data").min = dataLocal(1);
-
 
 let cliquesTitulo = 0;
 let numeroWhatsapp = "5519991365137";
@@ -337,12 +324,15 @@ document.getElementById("data").addEventListener("change", async function(){
 let hoje = new Date().toISOString().split("T")[0];
 
 if(this.value <= hoje){
-alert("Escolha uma data válida");
-this.value="";
-return;
+    alert("Escolha uma data válida");
+    this.value="";
+    return;
 }
-let dataSelecionada = new Date(this.value);
+
+let [ano, mes, dia] = this.value.split("-").map(Number);
+let dataSelecionada = new Date(ano, mes - 1, dia);
 let diaSemana = dataSelecionada.getDay();
+
 let horaSelect = document.getElementById("hora");
 
 horaSelect.innerHTML="";
