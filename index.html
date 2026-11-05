@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -6,14 +7,13 @@
 <title>Street barber</title>
 
 <style>
-
 *{
 box-sizing:border-box;
 }
 
 body{
-font-family: 'Segoe UI', Arial, sans-serif;
-background: linear-gradient(135deg,#0f0f0f,#1a1a1a,#000);
+font-family:'Segoe UI',Arial,sans-serif;
+background:linear-gradient(135deg,#0f0f0f,#1a1a1a,#000);
 color:white;
 margin:0;
 display:flex;
@@ -23,12 +23,12 @@ min-height:100vh;
 }
 
 .container{
-background: rgba(20,20,20,0.95);
+background:rgba(20,20,20,0.95);
 padding:35px;
 border-radius:18px;
 width:400px;
 box-shadow:0 0 40px rgba(255,0,0,0.35);
-backdrop-filter: blur(10px);
+backdrop-filter:blur(10px);
 border:1px solid rgba(255,255,255,0.05);
 }
 
@@ -37,10 +37,7 @@ text-align:center;
 color:#ff2b2b;
 margin-bottom:4px;
 letter-spacing:2px;
-text-shadow:
-0 0 5px #ff0000,
-0 0 10px #ff0000,
-0 0 20px #ff0000;
+text-shadow:0 0 5px #ff0000,0 0 10px #ff0000,0 0 20px #ff0000;
 }
 
 label{
@@ -48,7 +45,7 @@ font-size:13px;
 color:#ccc;
 }
 
-input, select{
+input,select{
 width:100%;
 padding:12px;
 margin-top:6px;
@@ -61,7 +58,7 @@ font-size:14px;
 transition:0.2s;
 }
 
-input:focus, select:focus{
+input:focus,select:focus{
 outline:none;
 box-shadow:0 0 10px rgba(255,0,0,0.7);
 background:#151515;
@@ -122,7 +119,7 @@ text-align:center;
 line-height:1.6;
 }
 
-    .topo{
+.topo{
 text-align:center;
 margin-bottom:20px;
 }
@@ -139,34 +136,21 @@ width:80px;
 height:3px;
 margin:2px auto 6px auto;
 border-radius:10px;
-background:linear-gradient(90deg, transparent, #ff2b2b, transparent);
+background:linear-gradient(90deg,transparent,#ff2b2b,transparent);
 animation:brilho 2s linear infinite;
 }
 
 @keyframes brilho{
-
-0%{
-transform:scaleX(0.6);
-opacity:0.6;
+0%{transform:scaleX(0.6);opacity:0.6;}
+50%{transform:scaleX(1);opacity:1;}
+100%{transform:scaleX(0.6);opacity:0.6;}
 }
-
-50%{
-transform:scaleX(1);
-opacity:1;
-}
-
-100%{
-transform:scaleX(0.6);
-opacity:0.6;
-}
-
-} 
 
 .icone{
 font-size:20px;
 text-align:center;
 margin:2px 0;
-filter: drop-shadow(0 0 6px red);
+filter:drop-shadow(0 0 6px red);
 }
 
 .credito{
@@ -204,23 +188,18 @@ cursor:not-allowed;
 }
 </style>
 </head>
-    
+
 <body>
 
-<div class="credito">© 2026 • Feito por Mota</div>    
+<div class="credito">© 2026 • Feito por Mota</div>
 
 <div class="container">
 
 <div class="topo">
-
 <h1 onclick="segredoBarbeiro()">STREET BARBER</h1>
-
 <div class="icone">💈</div>
-
 <div class="linha"></div>
-
 <p class="sub">Agende seu horário</p>
-
 </div>
 
 <label>Nome</label>
@@ -255,11 +234,9 @@ cursor:not-allowed;
 <button class="whatsapp" onclick="agendar()">Agendar e confirmar no WhatsApp</button>
 
 <div class="agendamentos" id="lista" style="display:none"></div>
-<button
-    id="sairBarbeiro"
-    onclick="sairBarbeiro()"
-    style="display:none;">
-    Sair do modo barbeiro
+
+<button id="sairBarbeiro" onclick="sairBarbeiro()" style="display:none;">
+Sair do modo barbeiro
 </button>
 
 <div class="horarios">
@@ -273,47 +250,48 @@ Sábado: 9h às 16h
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+
 import {
-    getAuth,
-    signInWithEmailAndPassword,
-    signOut
+getAuth,
+signInWithEmailAndPassword,
+signOut
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 import {
-    getFirestore,
-    collection,
-    addDoc,
-    getDocs,
-    deleteDoc,
-    doc,
-    runTransaction
+getFirestore,
+collection,
+addDoc,
+getDocs,
+deleteDoc,
+doc,
+runTransaction
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDGitiusddB0lTMbF05pLWeGtqvYkmwAbk",
-  authDomain: "street-barber-34a37.firebaseapp.com",
-  projectId: "street-barber-34a37",
-  storageBucket: "street-barber-34a37.firebasestorage.app",
-  messagingSenderId: "785996344727",
-  appId: "1:785996344727:web:9fc92c13c00d78964868d2",
-  measurementId: "G-2M2BM2Q353"
+apiKey: "AIzaSyDGitiusddB0lTMbF05pLWeGtqvYkmwAbk",
+authDomain: "street-barber-34a37.firebaseapp.com",
+projectId: "street-barber-34a37",
+storageBucket: "street-barber-34a37.firebasestorage.app",
+messagingSenderId: "785996344727",
+appId: "1:785996344727:web:9fc92c13c00d78964868d2",
+measurementId: "G-2M2BM2Q353"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
-function dataLocal(dias = 0) {
-    const data = new Date();
-    data.setDate(data.getDate() + dias);
 
-    const ano = data.getFullYear();
-    const mes = String(data.getMonth() + 1).padStart(2, "0");
-    const dia = String(data.getDate()).padStart(2, "0");
+function dataLocal(dias = 0){
+const data = new Date();
+data.setDate(data.getDate() + dias);
 
-    return `${ano}-${mes}-${dia}`;
+const ano = data.getFullYear();
+const mes = String(data.getMonth() + 1).padStart(2,"0");
+const dia = String(data.getDate()).padStart(2,"0");
+
+return `${ano}-${mes}-${dia}`;
 }
 
-// Permite selecionar a partir de amanhã
 document.getElementById("data").min = dataLocal(1);
 
 let cliquesTitulo = 0;
@@ -322,251 +300,272 @@ let modoBarbeiro = false;
 let ultimoAgendamento = "";
 let carregandoAgendamentos = false;
 
+
+// MOSTRAR AGENDAMENTOS EM ORDEM DE DATA E HORÁRIO
+
 async function mostrarAgendamentos(){
 
-    if(carregandoAgendamentos) return;
+if(carregandoAgendamentos || !modoBarbeiro) return;
 
-    carregandoAgendamentos = true;
+carregandoAgendamentos = true;
 
-    try {
+try{
 
-        const lista = document.getElementById("lista");
+const lista = document.getElementById("lista");
 
-        const querySnapshot = await getDocs(collection(db,"agendamentos"));
+const querySnapshot = await getDocs(collection(db,"agendamentos"));
 
-        lista.innerHTML = "";
+lista.innerHTML = "";
 
-        querySnapshot.forEach((docSnap)=>{
+// Organiza os agendamentos por data e horário
+const agendamentosOrdenados = querySnapshot.docs
+.map(docSnap => ({
+id:docSnap.id,
+...docSnap.data()
+}))
+.sort((a,b) => {
 
-            let a = docSnap.data();
-            let id = docSnap.id;
+const dataHoraA = `${a.data} ${a.hora}`;
+const dataHoraB = `${b.data} ${b.hora}`;
 
-            let item = document.createElement("div");
+return dataHoraA.localeCompare(dataHoraB);
 
-            item.className = "item";
+});
 
-            item.innerHTML = `
-            <b>${a.nome}</b><br>
-            Serviço: ${a.servico}<br>
-            Barbeiro: ${a.barbeiro}<br>
-            📅 ${a.data.split("-").reverse().join("/")} às ${a.hora}
-            <br>
-            ${modoBarbeiro ? `<button class="cancelar" onclick="remover('${id}')">Cancelar</button>` : ""}
-            `;
+agendamentosOrdenados.forEach((a)=>{
 
-            lista.appendChild(item);
+let id = a.id;
 
-        });
+let item = document.createElement("div");
 
-    } catch(error) {
+item.className = "item";
 
-        console.error("Erro ao carregar agendamentos:", error);
+item.innerHTML = `
+<b>${a.nome}</b><br>
+Serviço: ${a.servico}<br>
+Barbeiro: ${a.barbeiro}<br>
+📅 ${a.data.split("-").reverse().join("/")} às ${a.hora}
+<br>
+<button class="cancelar" onclick="remover('${id}')">Cancelar</button>
+`;
 
-    } finally {
+lista.appendChild(item);
 
-        carregandoAgendamentos = false;
+});
 
-    }
+}catch(error){
+
+console.error("Erro ao carregar agendamentos:",error);
+
+}finally{
+
+carregandoAgendamentos = false;
+
+}
 
 }
 
 setInterval(mostrarAgendamentos,100000);
-    
-document.getElementById("data").addEventListener("change", async function(){
 
-    let hoje = dataLocal();
 
-    const horaSelect = document.getElementById("hora");
+// SELEÇÃO DE DATA E HORÁRIOS
 
-    horaSelect.innerHTML = "";
-    horaSelect.dataset.hora = "";
+document.getElementById("data").addEventListener("change",async function(){
 
-    if(this.value <= hoje){
-        alert("Escolha uma data válida.");
-        this.value = "";
-        return;
-    }
+let hoje = dataLocal();
 
-    let [ano, mes, dia] = this.value.split("-").map(Number);
-    let dataSelecionada = new Date(ano, mes - 1, dia);
-    let diaSemana = dataSelecionada.getDay();
+const horaSelect = document.getElementById("hora");
 
-    // Domingo e segunda: fechado
-    if(diaSemana === 0 || diaSemana === 1){
-        alert("Não atendemos aos domingos e segundas.");
-        this.value = "";
-        return;
-    }
+horaSelect.innerHTML = "";
+horaSelect.dataset.hora = "";
 
-    let horarios = [];
+if(this.value <= hoje){
+alert("Escolha uma data válida.");
+this.value = "";
+return;
+}
 
-    // Terça a sexta
-    if(diaSemana >= 2 && diaSemana <= 5){
-        horarios = [
-            "09:00", "10:00", "11:00", "12:00",
-            "13:00", "14:00", "15:00", "16:00",
-            "17:00", "18:00", "19:00"
-        ];
-    }
+let [ano,mes,dia] = this.value.split("-").map(Number);
+let dataSelecionada = new Date(ano,mes-1,dia);
+let diaSemana = dataSelecionada.getDay();
 
-    // Sábado
-    else if(diaSemana === 6){
-        horarios = [
-            "09:00", "10:00", "11:00", "12:00",
-            "13:00", "14:00", "15:00", "16:00"
-        ];
-    }
+if(diaSemana === 0 || diaSemana === 1){
+alert("Não atendemos aos domingos e segundas.");
+this.value = "";
+return;
+}
 
-    try {
+let horarios = [];
 
-        const querySnapshot = await getDocs(collection(db, "agendamentos"));
+if(diaSemana >= 2 && diaSemana <= 5){
+horarios = [
+"09:00","10:00","11:00","12:00",
+"13:00","14:00","15:00","16:00",
+"17:00","18:00","19:00"
+];
+}else if(diaSemana === 6){
+horarios = [
+"09:00","10:00","11:00","12:00",
+"13:00","14:00","15:00","16:00"
+];
+}
 
-        let horariosOcupados = [];
+try{
 
-        querySnapshot.forEach((docSnap) => {
+const querySnapshot = await getDocs(collection(db,"agendamentos"));
 
-            let a = docSnap.data();
+let horariosOcupados = [];
 
-            if(a.data === this.value &&
-               a.barbeiro === document.getElementById("barbeiro").value){
+querySnapshot.forEach((docSnap)=>{
 
-                horariosOcupados.push(a.hora);
+let a = docSnap.data();
 
-            }
+if(a.data === this.value &&
+a.barbeiro === document.getElementById("barbeiro").value){
 
-        });
+horariosOcupados.push(a.hora);
 
-        horarios.forEach(h => {
-
-            let btn = document.createElement("button");
-
-            btn.textContent = h;
-            btn.className = "horario-btn";
-
-            if(horariosOcupados.includes(h)){
-
-                btn.classList.add("ocupado");
-                btn.disabled = true;
-
-            } else {
-
-                btn.onclick = function(){
-
-                    horaSelect.dataset.hora = h;
-
-                    document.querySelectorAll(".horario-btn").forEach(b => {
-                        b.style.background = "#222";
-                    });
-
-                    btn.style.background = "#ff2b2b";
-
-                };
-
-            }
-
-            horaSelect.appendChild(btn);
-
-        });
-
-    } catch(error) {
-
-        console.error("Erro ao consultar horários:", error);
-        alert("Não foi possível carregar os horários. Tente novamente.");
-
-    }
+}
 
 });
-    
+
+horarios.forEach(h=>{
+
+let btn = document.createElement("button");
+
+btn.textContent = h;
+btn.className = "horario-btn";
+
+if(horariosOcupados.includes(h)){
+
+btn.classList.add("ocupado");
+btn.disabled = true;
+
+}else{
+
+btn.onclick = function(){
+
+horaSelect.dataset.hora = h;
+
+document.querySelectorAll(".horario-btn").forEach(b=>{
+b.style.background = "#222";
+});
+
+btn.style.background = "#ff2b2b";
+
+};
+
+}
+
+horaSelect.appendChild(btn);
+
+});
+
+}catch(error){
+
+console.error("Erro ao consultar horários:",error);
+alert("Não foi possível carregar os horários. Tente novamente.");
+
+}
+
+});
+
+
+// AGENDAR
+
 window.agendar = async function(){
 
-let nome=document.getElementById("nome").value;
-let servico=document.getElementById("servico").value;
-let barbeiro=document.getElementById("barbeiro").value;
-let data=document.getElementById("data").value;
-let hora=document.getElementById("hora").dataset.hora;
+let nome = document.getElementById("nome").value;
+let servico = document.getElementById("servico").value;
+let barbeiro = document.getElementById("barbeiro").value;
+let data = document.getElementById("data").value;
+let hora = document.getElementById("hora").dataset.hora;
 let hoje = dataLocal();
 
 if(!data || data <= hoje){
-    alert("Agendamentos apenas para dias futuros.");
-    return;
+alert("Agendamentos apenas para dias futuros.");
+return;
 }
 
-let [ano, mes, dia] = data.split("-").map(Number);
-let diaSemana = new Date(ano, mes - 1, dia).getDay();
+let [ano,mes,dia] = data.split("-").map(Number);
+let diaSemana = new Date(ano,mes-1,dia).getDay();
 
 if(diaSemana === 0 || diaSemana === 1){
-    alert("Não atendemos aos domingos e segundas.");
-    return;
+alert("Não atendemos aos domingos e segundas.");
+return;
 }
 
 let partes = data.split("-");
 let dataFormatada = partes[2] + "/" + partes[1] + "/" + partes[0];
-if(!nome || !data || !hora){
 
+if(!nome || !data || !hora){
 alert("Preencha todos os campos");
 return;
 }
 
-// Verifica agendamentos já existentes
 const querySnapshot = await getDocs(collection(db,"agendamentos"));
 
 let ocupado = false;
 
 querySnapshot.forEach((docSnap)=>{
-    let a = docSnap.data();
 
-    if(a.data == data &&
-       a.hora == hora &&
-       a.barbeiro == barbeiro){
-        ocupado = true;
-    }
+let a = docSnap.data();
+
+if(a.data == data &&
+a.hora == hora &&
+a.barbeiro == barbeiro){
+
+ocupado = true;
+
+}
+
 });
 
 if(ocupado){
-    alert("Esse horário já foi agendado!");
-    return;
+alert("Esse horário já foi agendado!");
+return;
 }
 
-// Cria um identificador único para cada horário
 const idHorario = `${data}_${hora.replace(":","-")}_${barbeiro}`;
 
-try {
+try{
 
-    const reservado = await runTransaction(db, async (transaction) => {
+const reservado = await runTransaction(db,async(transaction)=>{
 
-        const referencia = doc(db, "agendamentos", idHorario);
+const referencia = doc(db,"agendamentos",idHorario);
 
-        const existente = await transaction.get(referencia);
+const existente = await transaction.get(referencia);
 
-        if(existente.exists()){
-            return false;
-        }
+if(existente.exists()){
+return false;
+}
 
-        transaction.set(referencia, {
-            nome: nome,
-            servico: servico,
-            barbeiro: barbeiro,
-            data: data,
-            hora: hora
-        });
+transaction.set(referencia,{
+nome:nome,
+servico:servico,
+barbeiro:barbeiro,
+data:data,
+hora:hora
+});
 
-        return true;
-    });
+return true;
 
-    if(!reservado){
-        alert("Esse horário acabou de ser reservado por outra pessoa!");
-        return;
-    }
+});
 
-} catch(error) {
+if(!reservado){
+alert("Esse horário acabou de ser reservado por outra pessoa!");
+return;
+}
 
-    console.error("Erro ao reservar:", error);
-    alert("Não foi possível realizar o agendamento. Tente novamente.");
-    return;
+}catch(error){
+
+console.error("Erro ao reservar:",error);
+alert("Não foi possível realizar o agendamento. Tente novamente.");
+return;
 
 }
 
-ultimoAgendamento=`
+ultimoAgendamento = `
 💈 *STREET BARBER*
 
 ✅ *Agendamento confirmado*
@@ -585,14 +584,17 @@ Obrigado por agendar conosco!
 `;
 
 limparCampos();
-mostrarAgendamentos();
 
-let url="https://wa.me/"+numeroWhatsapp+"?text="+encodeURIComponent(ultimoAgendamento);
+let url = "https://wa.me/" + numeroWhatsapp + "?text=" + encodeURIComponent(ultimoAgendamento);
+
 window.location.href = url;
 
 alert("Agendamento realizado!");
 
-}
+};
+
+
+// CANCELAR AGENDAMENTO
 
 window.remover = async function(id){
 
@@ -604,150 +606,122 @@ mostrarAgendamentos();
 
 }
 
-}
+};
+
+
+// LIMPAR CAMPOS
 
 function limparCampos(){
 
-document.getElementById("nome").value="";
-document.getElementById("data").value="";
-document.getElementById("hora").innerHTML="";
+document.getElementById("nome").value = "";
+document.getElementById("data").value = "";
+document.getElementById("hora").innerHTML = "";
+document.getElementById("hora").dataset.hora = "";
 
 }
 
+
+// WHATSAPP
+
 window.enviarWhats = function(){
 
-if(ultimoAgendamento==""){
+if(ultimoAgendamento == ""){
 alert("Faça um agendamento primeiro");
 return;
 }
 
-let url="https://wa.me/"+numeroWhatsapp+"?text="+encodeURIComponent(ultimoAgendamento);
+let url = "https://wa.me/" + numeroWhatsapp + "?text=" + encodeURIComponent(ultimoAgendamento);
 
 window.location.href = url;
 
-}
+};
+
+
+// LOGIN BARBEIRO
 
 window.loginBarbeiro = async function(){
 
-    let email = prompt("Digite o e-mail do barbeiro");
+let email = prompt("Digite o e-mail do barbeiro");
 
-    if(!email) return;
+if(!email) return;
 
-    let senha = prompt("Digite a senha do barbeiro");
+let senha = prompt("Digite a senha do barbeiro");
 
-    if(!senha) return;
+if(!senha) return;
 
-    try {
+try{
 
-        const usuario = await signInWithEmailAndPassword(
-            auth,
-            email,
-            senha
-        );
+const usuario = await signInWithEmailAndPassword(auth,email,senha);
 
-        if(usuario.user.uid !== "tqS4bGtqAiWCJzp2n1SoFaqcLzF3"){
-            await signOut(auth);
-            alert("Usuário sem autorização!");
-            return;
-        }
+if(usuario.user.uid !== "tqS4bGtqAiWCJzp2n1SoFaqcLzF3"){
 
-        modoBarbeiro = true;
-
-        document.getElementById("lista").style.display = "block";
-        document.getElementById("sairBarbeiro").style.display = "block";
-
-        alert("Modo barbeiro ativado!");
-
-        mostrarAgendamentos();
-
-    } catch(error) {
-
-        console.error(error);
-        alert("E-mail ou senha incorretos!");
-
-    }
+await signOut(auth);
+alert("Usuário sem autorização!");
+return;
 
 }
+
+modoBarbeiro = true;
+
+document.getElementById("lista").style.display = "block";
+document.getElementById("sairBarbeiro").style.display = "block";
+
+alert("Modo barbeiro ativado!");
+
+mostrarAgendamentos();
+
+}catch(error){
+
+console.error(error);
+alert("E-mail ou senha incorretos!");
+
+}
+
+};
+
+
+// SAIR DO MODO BARBEIRO
 
 window.sairBarbeiro = async function(){
 
-    try {
+try{
 
-        await signOut(auth);
+await signOut(auth);
 
-        modoBarbeiro = false;
+modoBarbeiro = false;
 
-        document.getElementById("lista").style.display = "none";
-        document.getElementById("lista").innerHTML = "";
-        document.getElementById("sairBarbeiro").style.display = "none";
+document.getElementById("lista").style.display = "none";
+document.getElementById("lista").innerHTML = "";
+document.getElementById("sairBarbeiro").style.display = "none";
 
-        alert("Você saiu do modo barbeiro!");
+alert("Você saiu do modo barbeiro!");
 
-    } catch(error) {
+}catch(error){
 
-        console.error(error);
-        alert("Erro ao sair do modo barbeiro.");
-
-    }
+console.error(error);
+alert("Erro ao sair do modo barbeiro.");
 
 }
+
+};
+
+
+// ACESSO AO MODO BARBEIRO
 
 window.segredoBarbeiro = function(){
 
-    cliquesTitulo++;
+cliquesTitulo++;
 
-    if(cliquesTitulo >= 5){
+if(cliquesTitulo >= 5){
 
-        cliquesTitulo = 0;
-        window.loginBarbeiro();
-
-    }
+cliquesTitulo = 0;
+window.loginBarbeiro();
 
 }
+
+};
+
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
