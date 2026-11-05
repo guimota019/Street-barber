@@ -486,9 +486,17 @@ let data=document.getElementById("data").value;
 let hora=document.getElementById("hora").dataset.hora;
 let hoje = dataLocal();
 
-if(data <= hoje){
-alert("Agendamentos apenas para dias futuros");
-return;
+if(!data || data <= hoje){
+    alert("Agendamentos apenas para dias futuros.");
+    return;
+}
+
+let [ano, mes, dia] = data.split("-").map(Number);
+let diaSemana = new Date(ano, mes - 1, dia).getDay();
+
+if(diaSemana === 0 || diaSemana === 1){
+    alert("Não atendemos aos domingos e segundas.");
+    return;
 }
 
 let partes = data.split("-");
