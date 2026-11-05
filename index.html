@@ -267,7 +267,15 @@ Sábado: 9h às 16h
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    deleteDoc,
+    doc,
+    runTransaction
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDGitiusddB0lTMbF05pLWeGtqvYkmwAbk",
@@ -434,30 +442,64 @@ alert("Preencha todos os campos");
 return;
 }
 
+// Verifica agendamentos já existentes
 const querySnapshot = await getDocs(collection(db,"agendamentos"));
 
 let ocupado = false;
 
 querySnapshot.forEach((docSnap)=>{
-let a = docSnap.data();
+    let a = docSnap.data();
 
-if(a.data == data && a.hora == hora && a.barbeiro == barbeiro){
-ocupado = true;
-}
+    if(a.data == data &&
+       a.hora == hora &&
+       a.barbeiro == barbeiro){
+        ocupado = true;
+    }
 });
 
 if(ocupado){
-alert("Esse horário já foi agendado");
-return;
+    alert("Esse horário já foi agendado!");
+    return;
 }
 
-await addDoc(collection(db,"agendamentos"),{
-nome:nome,
-servico:servico,
-barbeiro:barbeiro,
-data:data,
-hora:hora
-});
+// Cria um identificador único para cada horário
+const idHorario = `${data}_${hora.replace(":","-")}_${barbeiro}`;
+
+try {
+
+    const reservado = await runTransaction(db, async (transaction) => {
+
+        const referencia = doc(db, "agendamentos", idHorario);
+
+        const existente = await transaction.get(referencia);
+
+        if(existente.exists()){
+            return false;
+        }
+
+        transaction.set(referencia, {
+            nome: nome,
+            servico: servico,
+            barbeiro: barbeiro,
+            data: data,
+            hora: hora
+        });
+
+        return true;
+    });
+
+    if(!reservado){
+        alert("Esse horário acabou de ser reservado por outra pessoa!");
+        return;
+    }
+
+} catch(error) {
+
+    console.error("Erro ao reservar:", error);
+    alert("Não foi possível realizar o agendamento. Tente novamente.");
+    return;
+
+}
 
 ultimoAgendamento=`
 💈 *STREET BARBER*
