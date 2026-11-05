@@ -307,35 +307,53 @@ let cliquesTitulo = 0;
 let numeroWhatsapp = "5519991365137";
 let modoBarbeiro = false;
 let ultimoAgendamento = "";
+let carregandoAgendamentos = false;
 
 async function mostrarAgendamentos(){
 
-let lista = document.getElementById("lista");
-lista.innerHTML="";
+    if(carregandoAgendamentos) return;
 
-const querySnapshot = await getDocs(collection(db,"agendamentos"));
+    carregandoAgendamentos = true;
 
-querySnapshot.forEach((docSnap)=>{
+    try {
 
-let a = docSnap.data();
-let id = docSnap.id;
+        const lista = document.getElementById("lista");
 
-let item = document.createElement("div");
+        const querySnapshot = await getDocs(collection(db,"agendamentos"));
 
-item.className="item";
+        lista.innerHTML = "";
 
-item.innerHTML=`
-<b>${a.nome}</b><br>
-Serviço: ${a.servico}<br>
-Barbeiro: ${a.barbeiro}<br>
-📅 ${a.data.split("-").reverse().join("/")} às ${a.hora}
-<br>
-${modoBarbeiro ? `<button class="cancelar" onclick="remover('${id}')">Cancelar</button>` : ""}
-`;
+        querySnapshot.forEach((docSnap)=>{
 
-lista.appendChild(item);
+            let a = docSnap.data();
+            let id = docSnap.id;
 
-});
+            let item = document.createElement("div");
+
+            item.className = "item";
+
+            item.innerHTML = `
+            <b>${a.nome}</b><br>
+            Serviço: ${a.servico}<br>
+            Barbeiro: ${a.barbeiro}<br>
+            📅 ${a.data.split("-").reverse().join("/")} às ${a.hora}
+            <br>
+            ${modoBarbeiro ? `<button class="cancelar" onclick="remover('${id}')">Cancelar</button>` : ""}
+            `;
+
+            lista.appendChild(item);
+
+        });
+
+    } catch(error) {
+
+        console.error("Erro ao carregar agendamentos:", error);
+
+    } finally {
+
+        carregandoAgendamentos = false;
+
+    }
 
 }
 
