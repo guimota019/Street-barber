@@ -373,82 +373,108 @@ async function mostrarAgendamentos(){
 setInterval(mostrarAgendamentos,100000);
     
 document.getElementById("data").addEventListener("change", async function(){
-let hoje = dataLocal();
 
-if(this.value <= hoje){
-    alert("Escolha uma data válida");
-    this.value="";
-    return;
-}
+    let hoje = dataLocal();
 
-let [ano, mes, dia] = this.value.split("-").map(Number);
-let dataSelecionada = new Date(ano, mes - 1, dia);
-let diaSemana = dataSelecionada.getDay();
+    const horaSelect = document.getElementById("hora");
 
-let horaSelect = document.getElementById("hora");
+    horaSelect.innerHTML = "";
+    horaSelect.dataset.hora = "";
 
-horaSelect.innerHTML="";
+    if(this.value <= hoje){
+        alert("Escolha uma data válida.");
+        this.value = "";
+        return;
+    }
 
-if(diaSemana === 6){
-alert("Não atendemos aos domingos.");
-this.value="";
-return;
-}
+    let [ano, mes, dia] = this.value.split("-").map(Number);
+    let dataSelecionada = new Date(ano, mes - 1, dia);
+    let diaSemana = dataSelecionada.getDay();
 
-if(diaSemana === 0){
-alert("Não atendemos às segundas.");
-this.value="";
-return;
-}
+    // Domingo e segunda: fechado
+    if(diaSemana === 0 || diaSemana === 1){
+        alert("Não atendemos aos domingos e segundas.");
+        this.value = "";
+        return;
+    }
 
-let horarios=[];
+    let horarios = [];
 
-if(diaSemana>=1 && diaSemana<=4){
-horarios=["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00"];
-}
-else if(diaSemana==5){
-horarios=["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00"];
-}
+    // Terça a sexta
+    if(diaSemana >= 2 && diaSemana <= 5){
+        horarios = [
+            "09:00", "10:00", "11:00", "12:00",
+            "13:00", "14:00", "15:00", "16:00",
+            "17:00", "18:00", "19:00"
+        ];
+    }
 
-const querySnapshot = await getDocs(collection(db,"agendamentos"));
+    // Sábado
+    else if(diaSemana === 6){
+        horarios = [
+            "09:00", "10:00", "11:00", "12:00",
+            "13:00", "14:00", "15:00", "16:00"
+        ];
+    }
 
-let horariosOcupados = [];
+    try {
 
-querySnapshot.forEach((docSnap)=>{
-let a = docSnap.data();
+        const querySnapshot = await getDocs(collection(db, "agendamentos"));
 
-if(a.data == this.value){
-horariosOcupados.push(a.hora);
-}
-});
+        let horariosOcupados = [];
 
-horarios.forEach(h=>{
+        querySnapshot.forEach((docSnap) => {
 
-let btn = document.createElement("button");
-btn.textContent = h;
-btn.className = "horario-btn";
+            let a = docSnap.data();
 
-if(horariosOcupados.includes(h)){
-btn.classList.add("ocupado");
-btn.disabled = true;
-}else{
+            if(a.data === this.value &&
+               a.barbeiro === document.getElementById("barbeiro").value){
 
-btn.onclick = function(){
+                horariosOcupados.push(a.hora);
 
-document.getElementById("hora").dataset.hora = h;
+            }
 
-document.querySelectorAll(".horario-btn").forEach(b=>{
-b.style.background="#222";
-});
+        });
 
-btn.style.background="#ff2b2b";
+        horarios.forEach(h => {
 
-};
-}
+            let btn = document.createElement("button");
 
-horaSelect.appendChild(btn);
+            btn.textContent = h;
+            btn.className = "horario-btn";
 
-});
+            if(horariosOcupados.includes(h)){
+
+                btn.classList.add("ocupado");
+                btn.disabled = true;
+
+            } else {
+
+                btn.onclick = function(){
+
+                    horaSelect.dataset.hora = h;
+
+                    document.querySelectorAll(".horario-btn").forEach(b => {
+                        b.style.background = "#222";
+                    });
+
+                    btn.style.background = "#ff2b2b";
+
+                };
+
+            }
+
+            horaSelect.appendChild(btn);
+
+        });
+
+    } catch(error) {
+
+        console.error("Erro ao consultar horários:", error);
+        alert("Não foi possível carregar os horários. Tente novamente.");
+
+    }
+
 });
     
 window.agendar = async function(){
