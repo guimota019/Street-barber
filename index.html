@@ -281,6 +281,19 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+function dataLocal(dias = 0) {
+    const data = new Date();
+    data.setDate(data.getDate() + dias);
+
+    const ano = data.getFullYear();
+    const mes = String(data.getMonth() + 1).padStart(2, "0");
+    const dia = String(data.getDate()).padStart(2, "0");
+
+    return `${ano}-${mes}-${dia}`;
+}
+
+document.getElementById("data").min = dataLocal(1);
+
 
 let cliquesTitulo = 0;
 let numeroWhatsapp = "5519991365137";
@@ -318,7 +331,7 @@ lista.appendChild(item);
 
 }
 
-setInterval(mostrarAgendamentos,5000);
+setInterval(mostrarAgendamentos,100000);
     
 document.getElementById("data").addEventListener("change", async function(){
 let hoje = new Date().toISOString().split("T")[0];
