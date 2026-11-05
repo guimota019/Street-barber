@@ -255,6 +255,12 @@ cursor:not-allowed;
 <button class="whatsapp" onclick="agendar()">Agendar e confirmar no WhatsApp</button>
 
 <div class="agendamentos" id="lista" style="display:none"></div>
+<button
+    id="sairBarbeiro"
+    onclick="sairBarbeiro()"
+    style="display:none;">
+    Sair do modo barbeiro
+</button>
 
 <div class="horarios">
 <b>Horários de funcionamento:</b><br>
@@ -269,7 +275,9 @@ Sábado: 9h às 16h
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
     getAuth,
-    signInWithEmailAndPassword
+    signInWithEmailAndPassword,
+    signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
     getFirestore,
@@ -604,7 +612,7 @@ window.loginBarbeiro = async function(){
         );
 
         if(usuario.user.uid !== "tqS4bGtqAiWCJzp2n1SoFaqcLzF3"){
-            await auth.signOut();
+            await signOut(auth);
             alert("Usuário sem autorização!");
             return;
         }
@@ -612,6 +620,7 @@ window.loginBarbeiro = async function(){
         modoBarbeiro = true;
 
         document.getElementById("lista").style.display = "block";
+        document.getElementById("sairBarbeiro").style.display = "block";
 
         alert("Modo barbeiro ativado!");
 
@@ -627,6 +636,31 @@ window.loginBarbeiro = async function(){
 }
 
 window.segredoBarbeiro = function(){
+window.sairBarbeiro = async function(){
+
+    try {
+
+        await signOut(auth);
+
+        modoBarbeiro = false;
+
+        document.getElementById("lista").style.display = "none";
+
+        document.getElementById("lista").innerHTML = "";
+
+        document.getElementById("sairBarbeiro").style.display = "none";
+
+        alert("Você saiu do modo barbeiro!");
+
+    } catch(error) {
+
+        console.error(error);
+
+        alert("Erro ao sair do modo barbeiro.");
+
+    }
+
+}
 
     cliquesTitulo++;
 
