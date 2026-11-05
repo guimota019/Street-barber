@@ -268,6 +268,10 @@ Sábado: 9h às 16h
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
+    getAuth,
+    signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
     getFirestore,
     collection,
     addDoc,
@@ -289,6 +293,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 function dataLocal(dias = 0) {
     const data = new Date();
     data.setDate(data.getDate() + dias);
@@ -580,41 +585,61 @@ window.location.href = url;
 
 }
 
-window.loginBarbeiro = function(){
+window.loginBarbeiro = async function(){
 
-let senha = prompt("Digite a senha do barbeiro");
+    let email = prompt("Digite o e-mail do barbeiro");
 
-if(senha === "barber123"){
+    if(!email) return;
 
-modoBarbeiro = true;
+    let senha = prompt("Digite a senha do barbeiro");
 
-document.getElementById("lista").style.display="block";
+    if(!senha) return;
 
-alert("Modo barbeiro ativado");
+    try {
 
-mostrarAgendamentos();
+        const usuario = await signInWithEmailAndPassword(
+            auth,
+            email,
+            senha
+        );
 
-} else {
+        if(usuario.user.uid !== "tqS4bGtqAiWCJzp2n1SoFaqcLzF3"){
+            await auth.signOut();
+            alert("Usuário sem autorização!");
+            return;
+        }
 
-alert("Senha incorreta");
+        modoBarbeiro = true;
 
-}
+        document.getElementById("lista").style.display = "block";
+
+        alert("Modo barbeiro ativado!");
+
+        mostrarAgendamentos();
+
+    } catch(error) {
+
+        console.error(error);
+        alert("E-mail ou senha incorretos!");
+
+    }
 
 }
 
 window.segredoBarbeiro = function(){
 
-cliquesTitulo++;
+    cliquesTitulo++;
 
-if(cliquesTitulo >= 5){
+    if(cliquesTitulo >= 5){
 
-loginBarbeiro();
+        loginBarbeiro();
 
-cliquesTitulo = 0;
+        cliquesTitulo = 0;
+
+    }
 
 }
 
-}
 </script>
 
 </body>
