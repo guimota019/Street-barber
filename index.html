@@ -368,7 +368,7 @@ lista.innerHTML = "";
 let botaoExcluir = document.createElement("button");
 
 botaoExcluir.className = "excluir-antigos";
-botaoExcluir.textContent = "🗑️ Excluir agendamentos anteriores (1h)";
+botaoExcluir.textContent = "🗑️ Excluir agendamentos anteriores";
 botaoExcluir.onclick = window.excluirAgendamentosAntigos;
 
 lista.appendChild(botaoExcluir);
@@ -455,7 +455,7 @@ return;
 }
 
 const confirmar = confirm(
-`Foram encontrados ${antigos.length} agendamento(s) com mais de 1 hora de atraso.\n\nDeseja excluir esses agendamentos?\n\nEssa ação não poderá ser desfeita.`
+`Foram encontrados ${antigos.length} agendamento(s) com horário já encerrado há mais de 1 hora.\n\nDeseja excluir esses agendamentos?\n\nEssa ação não poderá ser desfeita.`
 );
 
 if(!confirmar) return;
