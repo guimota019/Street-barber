@@ -379,6 +379,12 @@ const horaSelect = document.getElementById("hora");
 horaSelect.innerHTML = "";
 horaSelect.dataset.hora = "";
 
+// CORREÇÃO DO IPHONE:
+// Não valida enquanto o campo de data estiver vazio.
+if(!this.value){
+return;
+}
+
 if(this.value <= hoje){
 alert("Escolha uma data válida.");
 this.value = "";
