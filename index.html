@@ -311,9 +311,9 @@ let carregandoAgendamentos = false;
 let excluindoAgendamentos = false;
 
 
-// VERIFICA SE O AGENDAMENTO PASSOU HÁ PELO MENOS 2 HORAS
+// VERIFICA SE O AGENDAMENTO PASSOU HÁ PELO MENOS 1 HORA
 
-function agendamentoPassouDuasHoras(a){
+function agendamentoPassouUmaHora(a){
 
 if(!a.data || !a.hora) return false;
 
@@ -323,7 +323,9 @@ const [hora,minuto] = a.hora.split(":").map(Number);
 if(
 !ano || !mes || !dia ||
 Number.isNaN(hora) ||
-Number.isNaN(minuto)
+Number.isNaN(minuto) ||
+hora < 0 || hora > 23 ||
+minuto < 0 || minuto > 59
 ){
 return false;
 }
@@ -336,13 +338,11 @@ hora,
 minuto
 );
 
-if(Number.isNaN(dataAgendamento.getTime())){
-return false;
-}
+if(Number.isNaN(dataAgendamento.getTime())) return false;
 
-const limite = new Date(Date.now() - 2 * 60 * 60 * 1000);
+const limite = Date.now() - (1 * 60 * 60 * 1000);
 
-return dataAgendamento <= limite;
+return dataAgendamento.getTime() <= limite;
 
 }
 
@@ -363,12 +363,12 @@ const querySnapshot = await getDocs(collection(db,"agendamentos"));
 
 lista.innerHTML = "";
 
-// BOTÃO PARA EXCLUIR AGENDAMENTOS COM MAIS DE 2 HORAS DE ATRASO
+// BOTÃO PARA EXCLUIR AGENDAMENTOS COM MAIS DE 1 HORA DE ATRASO
 
 let botaoExcluir = document.createElement("button");
 
 botaoExcluir.className = "excluir-antigos";
-botaoExcluir.textContent = "🗑️ Excluir agendamentos anteriores (2h)";
+botaoExcluir.textContent = "🗑️ Excluir agendamentos anteriores (1h)";
 botaoExcluir.onclick = window.excluirAgendamentosAntigos;
 
 lista.appendChild(botaoExcluir);
@@ -426,7 +426,7 @@ carregandoAgendamentos = false;
 setInterval(mostrarAgendamentos,100000);
 
 
-// EXCLUIR AGENDAMENTOS COM MAIS DE 2 HORAS DE ATRASO
+// EXCLUIR AGENDAMENTOS COM MAIS DE 1 HORA DE ATRASO
 
 window.excluirAgendamentosAntigos = async function(){
 
@@ -438,27 +438,24 @@ try{
 
 const querySnapshot = await getDocs(collection(db,"agendamentos"));
 
-const agora = Date.now();
-const limite = new Date(agora - 2 * 60 * 60 * 1000);
-
 const antigos = querySnapshot.docs.filter(docSnap => {
 
 const a = docSnap.data();
 
-return agendamentoPassouDuasHoras(a);
+return agendamentoPassouUmaHora(a);
 
 });
 
 if(antigos.length === 0){
 
-alert("Não existem agendamentos com mais de 2 horas de atraso.");
+alert("Não existem agendamentos com mais de 1 hora de atraso.");
 
 return;
 
 }
 
 const confirmar = confirm(
-`Foram encontrados ${antigos.length} agendamento(s) com mais de 2 horas de atraso.\n\nDeseja excluir esses agendamentos?\n\nEssa ação não poderá ser desfeita.`
+`Foram encontrados ${antigos.length} agendamento(s) com mais de 1 hora de atraso.\n\nDeseja excluir esses agendamentos?\n\nEssa ação não poderá ser desfeita.`
 );
 
 if(!confirmar) return;
